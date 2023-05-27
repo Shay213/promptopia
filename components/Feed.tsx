@@ -8,6 +8,11 @@ export interface Post {
   _id: string;
   prompt: string;
   tag: string;
+  creator: {
+    email: string;
+    image: string;
+    username: string;
+  };
 }
 
 const Feed = () => {
@@ -21,7 +26,6 @@ const Feed = () => {
     (async () => {
       const res = await fetch("/api/prompt");
       const data = await res.json();
-
       setPosts(data);
     })();
   }, []);
