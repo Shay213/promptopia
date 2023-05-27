@@ -14,7 +14,7 @@ import {
 import { BuiltInProviderType } from "next-auth/providers";
 
 const Navbar = () => {
-  const isUserLoggedIn = true;
+  const { data: session } = useSession();
 
   const [providers, setProviders] = useState<Record<
     LiteralUnion<BuiltInProviderType, string>,
@@ -45,18 +45,22 @@ const Navbar = () => {
 
       {/* DESKTOP NAVIGATION */}
       <div className="sm:flex hidden">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex gap-3 md:gap-5">
             <Link href="/create-prompt" className="black_btn">
               Create Post
             </Link>
 
-            <button type="button" onClick={signOut} className="outline_btn">
+            <button
+              type="button"
+              onClick={() => signOut()}
+              className="outline_btn"
+            >
               Sign Out
             </button>
             <Link href="/profile">
               <Image
-                src="/assets/images/logo.svg"
+                src={session.user?.image ?? ""}
                 width={37}
                 height={37}
                 alt="profile"
@@ -83,10 +87,10 @@ const Navbar = () => {
 
       {/* MOBILE NAVIGATION */}
       <div className="sm:hidden flex relative">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex">
             <Image
-              src="/assets/images/logo.svg"
+              src={session.user?.image ?? ""}
               width={37}
               height={37}
               className="rounded-full"
