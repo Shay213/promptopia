@@ -28,7 +28,27 @@ const UserProfile = () => {
     [router]
   );
 
-  const handleDelete = useCallback(async (p: Post) => {}, []);
+  const handleDelete = useCallback(
+    async (p: Post) => {
+      const hasConfirmed = confirm(
+        "Are you sure you want to delete this prompt"
+      );
+
+      if (hasConfirmed) {
+        try {
+          await fetch(`/api/prompt/${p._id.toString()}`, {
+            method: "DELETE",
+          });
+
+          const filteredPosts = posts.filter((post) => post._id !== p._id);
+          setPosts(filteredPosts);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    },
+    [posts]
+  );
 
   return (
     <Profile
